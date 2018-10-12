@@ -6,7 +6,23 @@ using System.Threading.Tasks;
 
 namespace VF.Cotg.Data
 {
-    interface IDbManager
+
+    /// <summary>
+    /// The Database Manager
+    /// </summary>
+    public interface IDbManager
     {
+
+        /// <summary>
+        /// Create Database
+        /// </summary>
+        void CreateDatabase();
+
+        /// <summary>
+        /// Determine if Database Exists
+        /// </summary>
+        /// <returns>True if the database exists</returns>
+        bool DatabaseExists();
+
     }
 }
