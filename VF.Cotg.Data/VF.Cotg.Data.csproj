@@ -47,6 +47,7 @@
   <ItemGroup>
     <Compile Include="DataAccess\BaseDAO.cs" />
     <Compile Include="IDbManager.cs" />
+    <Compile Include="Models\UnitKillsHistoryModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

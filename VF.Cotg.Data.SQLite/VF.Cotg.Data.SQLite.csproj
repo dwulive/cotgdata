@@ -63,7 +63,10 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CotgDataContract.cs" />
     <Compile Include="CotgSQLiteDbManager.cs" />
+    <Compile Include="DataAccess\SQLiteUnitKillsHistoryDAOImpl.cs" />
+    <Compile Include="Models\SQLiteUnitKillsHistoryModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

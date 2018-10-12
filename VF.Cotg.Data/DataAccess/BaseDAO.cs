@@ -43,11 +43,11 @@ namespace VF.Cotg.Data.DataAccess
         /// <summary>
         /// Initialize BaseDAO
         /// </summary>
-        public BaseDAO(IDbManager dbManager)
+        public BaseDAO(ConnectionStringSettings connectionStringSettings, IDbManager dbManager)
         {
             try
             {
-                _connectionStringSettings = DataSettings.ConnectionStringSettings;
+                _connectionStringSettings = connectionStringSettings;
                 _dbFactory = CreateDbProviderFactory(_connectionStringSettings);
                 _dbManager = dbManager;
             }
