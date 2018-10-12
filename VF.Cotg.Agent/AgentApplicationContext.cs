@@ -8,12 +8,17 @@ using System.Windows.Forms;
 
 using log4net;
 
+using Ninject;
+
 namespace VF.Cotg.Agent
 {
 
     /// <summary>
     /// The Agent Application Context
     /// </summary>
+    /// <remarks>
+    /// Will have to wire-up Ninject kernel for data and service implementations
+    /// </remarks>
     public class AgentApplicationContext : ApplicationContext
     {
 
@@ -21,6 +26,11 @@ namespace VF.Cotg.Agent
         /// The Logger
         /// </summary>
         private static readonly ILog logger = LogManager.GetLogger(typeof(AgentApplicationContext));
+
+        /// <summary>
+        /// The Kernel
+        /// </summary>
+        private static StandardKernel _kernel;
 
         /// <summary>
         /// The BaseUrl
@@ -39,9 +49,11 @@ namespace VF.Cotg.Agent
         {
             try
             {
+                _kernel = InitializeContainer();
                 _baseUrl = GetWebServerBaseUrl();
                 _webServer = new WebServer.WebServer(_baseUrl);
-                MainForm = new MainForm(_webServer);
+                var importService = _kernel.Get<Services.IImportService>();
+                MainForm = new MainForm(_webServer, importService);
             }
             catch (Exception caught)
             {
@@ -63,6 +75,9 @@ namespace VF.Cotg.Agent
         /// Get the Base URl Setting
         /// </summary>
         /// <returns>The Base URl Setting</returns>
+        /// <remarks>
+        /// TODO: This should be moved to the settings namespace
+        /// </remarks>
         private string GetWebServerBaseUrl()
         {
             try
@@ -86,6 +101,60 @@ namespace VF.Cotg.Agent
             catch (Exception caught)
             {
                 logger.Error("Unexpected Error Getting Base Url Setting", caught);
+                throw;
+            }
+        }
+
+        /// <summary>
+        /// Initialize IOC Container
+        /// </summary>
+        /// <returns>The IoC Container</returns>
+        static StandardKernel InitializeContainer()
+        {
+            try
+            {
+                logger.Info("Initializing IoC Container");
+
+                var kernel = new StandardKernel();
+
+                var configuredDataProvider = Common.Settings.DataSettings.DataProvider;
+                if (Common.Settings.DataSettings.PROVIDER_SQLITE.Equals(configuredDataProvider))
+                {
+                    logger.Info("Installing SQLite Data Dependancies");
+                    InstallSQLiteDependencies(kernel);
+                }
+
+                kernel.Bind<Services.IImportService>()
+                    .To<Services.Standard.StandardImportServiceImpl>()
+                    .InSingletonScope();
+
+                return kernel;
+            }
+            catch (Exception caught)
+            {
+                logger.Error("Unexpected Error Initializing Container", caught);
+                throw;
+            }
+        }
+
+        /// <summary>
+        /// Install SQLite Dependencies
+        /// </summary>
+        /// <param name="kernel">The Kernel</param>
+        static void InstallSQLiteDependencies(StandardKernel kernel)
+        {
+            try
+            {
+                kernel.Bind<Data.DataAccess.IUnitKillsHistoryDAO>()
+                    .To<Data.SQLite.DataAccess.SQLiteUnitKillsHistoryDAOImpl>()
+                    .InSingletonScope();
+                kernel.Bind<Data.IDbManager>()
+                    .To<Data.SQLite.CotgSQLiteDbManager>()
+                    .InSingletonScope();
+            }
+            catch (Exception caught)
+            {
+                logger.Error("Unexpected Error Installing SQLite Depenencies", caught);
                 throw;
             }
         }

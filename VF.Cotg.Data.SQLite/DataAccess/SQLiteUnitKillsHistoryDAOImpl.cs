@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using log4net;
 
 using VF.Cotg.Common.Settings;
+using VF.Cotg.Common.Utility;
 using VF.Cotg.Data.Models;
 using VF.Cotg.Data.DataAccess;
 
@@ -21,7 +22,7 @@ namespace VF.Cotg.Data.SQLite.DataAccess
     /// Need to find out if players can disappear, or have any need to "delete"
     /// Under this model would have to use an expiry date field, that might have to be added...
     /// </remarks>
-    public class SQLiteUnitKillsHistoryDAOImpl : BaseDAO
+    public class SQLiteUnitKillsHistoryDAOImpl : BaseDAO, IUnitKillsHistoryDAO
     {
 
         /// <summary>
@@ -66,7 +67,7 @@ namespace VF.Cotg.Data.SQLite.DataAccess
                     connection.Open();
                     using (var command = CreateCommand(connection, CommandType.Text, sql))
                     {
-                        command.Parameters.Add(CreateParameter("@effectiveDate", DbType.DateTime, effectiveDate));
+                        command.Parameters.Add(CreateParameter("@effectiveDate", DbType.Double, DateUtility.DateToEpoch(effectiveDate)));
 
                         var results = new List<UnitKillsHistoryModel>();
                         using (var reader = command.ExecuteReader())
@@ -74,6 +75,7 @@ namespace VF.Cotg.Data.SQLite.DataAccess
                             while (reader.Read())
                             {
                                 var unitKillsHistoryModel = new Models.SQLiteUnitKillsHistoryModel(reader);
+                                results.Add(unitKillsHistoryModel);
                             }
                         }
                         return results;
@@ -112,10 +114,10 @@ namespace VF.Cotg.Data.SQLite.DataAccess
                     connection.Open();
                     using (var command = CreateCommand(connection, CommandType.Text, sql))
                     {
-                        command.Parameters.Add(CreateParameter("@playerName", DbType.String, effectiveDate));
-                        command.Parameters.Add(CreateParameter("@effectiveDate", DbType.DateTime, effectiveDate));
-                        command.Parameters.Add(CreateParameter("@score", DbType.Int64, effectiveDate));
-                        command.Parameters.Add(CreateParameter("@rank", DbType.Int32, effectiveDate));
+                        command.Parameters.Add(CreateParameter("@playerName", DbType.String, playerName));
+                        command.Parameters.Add(CreateParameter("@effectiveDate", DbType.Double, DateUtility.DateToEpoch(effectiveDate)));
+                        command.Parameters.Add(CreateParameter("@score", DbType.Int64, score));
+                        command.Parameters.Add(CreateParameter("@rank", DbType.Int32, rank));
 
                         command.ExecuteNonQuery();
                     }

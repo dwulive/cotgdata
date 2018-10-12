@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 
 using log4net;
 
+using VF.Cotg.Common.Utility;
 using VF.Cotg.Data.Models;
 
 namespace VF.Cotg.Data.SQLite.Models
@@ -73,7 +74,7 @@ namespace VF.Cotg.Data.SQLite.Models
                 RealizeColumnMappings(reader);
                 ID = reader.GetInt64(_indexID);
                 PlayerName = reader.GetString(_indexPlayerName);
-                EffectiveDate = reader.GetDateTime(_indexEffectiveDate);
+                EffectiveDate = DateUtility.EpochToDate(reader.GetDouble(_indexEffectiveDate));
                 Score = reader.GetInt64(_indexScore);
                 Rank = reader.GetInt32(_indexRank);
             }

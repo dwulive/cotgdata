@@ -84,7 +84,7 @@ namespace VF.Cotg.Data.SQLite
                 {
                     connection.Open();
                     logger.Info("Initializing Database Schema");
-                    //TODO: Run Schema Creation Helpers
+                    CreateUnitKillsHistoryTable(connection);
 
                     logger.Info("Seeding Initial Data");
                     //TODO: Run Seeding Helpers
@@ -157,6 +157,35 @@ namespace VF.Cotg.Data.SQLite
         #endregion
 
         #region [Schema Initialization Helpers]
+
+        /// <summary>
+        /// Create Unit Kills History Table
+        /// </summary>
+        /// <param name="connection">The Connection</param>
+        private void CreateUnitKillsHistoryTable(SQLiteConnection connection)
+        {
+            try
+            {
+                var sql =
+                    $" CREATE TABLE {CotgDataContract.UnitKillsHistory.TABLE_NAME} ( " +
+                    $"    {CotgDataContract.UnitKillsHistory.COLUMN_ID_NAME} INTEGER PRIMARY KEY AUTOINCREMENT" +
+                    $"    , {CotgDataContract.UnitKillsHistory.COLUMN_PLAYERNAME_NAME} TEXT NULL " +
+                    $"    , {CotgDataContract.UnitKillsHistory.COLUMN_EFFECTIVEDATE_NAME} TEXT NOT NULL " +
+                    $"    , {CotgDataContract.UnitKillsHistory.COLUMN_SCORE_NAME} INTEGER NOT NULL " +
+                    $"    , {CotgDataContract.UnitKillsHistory.COLUMN_RANK_NAME} INTEGER NOT NULL " +
+                    $" ); ";
+                using (var command = new SQLiteCommand(sql, connection))
+                {
+                    var recordsAffected = command.ExecuteNonQuery();
+                    logger.Info($"Created Unit Kills History Table - {recordsAffected} records affected");
+                }
+            }
+            catch (Exception caught)
+            {
+                logger.Error("Unexpected Error Creating Unit Kills History Table", caught);
+                throw;
+            }
+        }
 
         #endregion
 

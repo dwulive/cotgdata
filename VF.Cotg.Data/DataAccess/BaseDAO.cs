@@ -50,6 +50,7 @@ namespace VF.Cotg.Data.DataAccess
                 _connectionStringSettings = connectionStringSettings;
                 _dbFactory = CreateDbProviderFactory(_connectionStringSettings);
                 _dbManager = dbManager;
+                InitializeDatabase();
             }
             catch (Exception caught)
             {

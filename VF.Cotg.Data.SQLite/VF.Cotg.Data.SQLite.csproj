@@ -68,6 +68,7 @@
     <Compile Include="DataAccess\SQLiteUnitKillsHistoryDAOImpl.cs" />
     <Compile Include="Models\SQLiteUnitKillsHistoryModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="SQLiteHelperExtensions.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

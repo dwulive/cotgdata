@@ -32,6 +32,11 @@ namespace VF.Cotg.Agent
         WebServer.WebServer _webServer;
 
         /// <summary>
+        /// The Import Service
+        /// </summary>
+        Services.IImportService _importService;
+
+        /// <summary>
         /// Initialize MainForm
         /// </summary>
         public MainForm()
@@ -51,11 +56,12 @@ namespace VF.Cotg.Agent
         /// Initialize MainForm
         /// </summary>
         /// <param name="webServer">The WebServer</param>
-        public MainForm(WebServer.WebServer webServer) : this()
+        public MainForm(WebServer.WebServer webServer, Services.IImportService importService) : this()
         {
             try
             {
                 _webServer = webServer;
+                _importService = importService;
             }
             catch (Exception caught)
             {
@@ -162,5 +168,35 @@ namespace VF.Cotg.Agent
 
         #endregion
 
+        /// <summary>
+        /// TEST METHOD - DELTE ME
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void HandleImportSingleRecordClick(object sender, EventArgs e)
+        {
+            var effectiveDate = EffectiveDatePicker.Value.ToUniversalTime();
+            var playerName = PlayerNameTextbox.Text;
+            var score = long.Parse(ScoreTextBox.Text);
+            var rank = int.Parse(RankTextBox.Text);
+            _importService.TestImportSingleUnitKillsHistory(effectiveDate, playerName, score, rank);
+        }
+
+        /// <summary>
+        /// TEST METHOD - DELETE ME
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void HandleRefreshRankingsClick(object sender, EventArgs e)
+        {
+            RankingsListView.Items.Clear();
+            var rankings = _importService.GetUnitKillsHistory(EffectiveDatePicker.Value.ToUniversalTime());
+            foreach (var ranking in rankings)
+            {
+                var lvi = new ListViewItem(new string[] { ranking.EffectiveDate.ToShortDateString() + " " + ranking.EffectiveDate.ToLongTimeString(),
+                    ranking.PlayerName, Convert.ToString(ranking.Score), Convert.ToString(ranking.Rank) });
+                RankingsListView.Items.Add(lvi);
+            }
+        }
     }
 }
