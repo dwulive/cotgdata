@@ -161,7 +161,7 @@
             this.EffectiveDatePicker.Format = System.Windows.Forms.DateTimePickerFormat.Custom;
             this.EffectiveDatePicker.Location = new System.Drawing.Point(96, 42);
             this.EffectiveDatePicker.Name = "EffectiveDatePicker";
-            this.EffectiveDatePicker.Size = new System.Drawing.Size(135, 20);
+            this.EffectiveDatePicker.Size = new System.Drawing.Size(197, 20);
             this.EffectiveDatePicker.TabIndex = 6;
             // 
             // PlayerNameTextbox

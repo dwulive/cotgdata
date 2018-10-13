@@ -60,7 +60,7 @@ namespace VF.Cotg.Services.Standard
         {
             try
             {
-                _unitKillsHistoryDAO.InsertUnitKillsHistory(playerName, effectiveDate, 100000, 17);
+                _unitKillsHistoryDAO.InsertUnitKillsHistory(playerName, effectiveDate, score, rank);
             }
             catch (Exception caught)
             {
