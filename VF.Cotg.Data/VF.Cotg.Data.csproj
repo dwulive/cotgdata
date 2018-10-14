@@ -48,6 +48,14 @@
     <Compile Include="DataAccess\BaseDAO.cs" />
     <Compile Include="DataAccess\IUnitKillsHistoryDAO.cs" />
     <Compile Include="IDbManager.cs" />
+    <Compile Include="Models\AllianceScoreHistoryModel.cs" />
+    <Compile Include="Models\CavernsHistoryModel.cs" />
+    <Compile Include="Models\CurrentAllianceRankingModel.cs" />
+    <Compile Include="Models\CurrentEmpireRankingModel.cs" />
+    <Compile Include="Models\DefReputationHistoryModel.cs" />
+    <Compile Include="Models\OffReputationHistoryModel.cs" />
+    <Compile Include="Models\ParamsModel.cs" />
+    <Compile Include="Models\PlunderedHistoryModel.cs" />
     <Compile Include="Models\UnitKillsHistoryModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
