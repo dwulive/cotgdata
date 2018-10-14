@@ -170,7 +170,7 @@ namespace VF.Cotg.Data.SQLite
                     $" CREATE TABLE {CotgDataContract.UnitKillsHistory.TABLE_NAME} ( " +
                     $"    {CotgDataContract.UnitKillsHistory.COLUMN_ID_NAME} INTEGER PRIMARY KEY AUTOINCREMENT" +
                     $"    , {CotgDataContract.UnitKillsHistory.COLUMN_PLAYERNAME_NAME} TEXT NULL " +
-                    $"    , {CotgDataContract.UnitKillsHistory.COLUMN_EFFECTIVEDATE_NAME} TEXT NOT NULL " +
+                    $"    , {CotgDataContract.UnitKillsHistory.COLUMN_EFFECTIVEDATE_NAME} DATETIME NOT NULL " +
                     $"    , {CotgDataContract.UnitKillsHistory.COLUMN_SCORE_NAME} INTEGER NOT NULL " +
                     $"    , {CotgDataContract.UnitKillsHistory.COLUMN_RANK_NAME} INTEGER NOT NULL " +
                     $" ); ";
